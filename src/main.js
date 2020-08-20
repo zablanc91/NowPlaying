@@ -3,6 +3,7 @@ import App from './App.vue';
 import VueRouter from 'vue-router';
 import Playlist from './components/Playlist';
 import Songs from './components/Songs';
+import store from './store/store';
 
 Vue.config.productionTip = false;
 Vue.use(VueRouter);
@@ -18,6 +19,7 @@ const router = new VueRouter({
 });
 
 new Vue({
+  store,
   router,
   render: h => h(App),
 }).$mount('#app');
