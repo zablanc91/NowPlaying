@@ -17,7 +17,8 @@ const store = new Vuex.Store({
                 name: 'Off the Rails',
                 src: require('../assets/OffTheRails.mp3')
             }
-        ]
+        ],
+        playlistIndex : 0
     },
     mutations: {
         addSong(state, song){
@@ -28,7 +29,8 @@ const store = new Vuex.Store({
         }
     },
     getters: {
-        playlist: state => state.playlist  
+        playlist: state => state.playlist,
+        playlistIndex: state => state.playlistIndex   
     }
 });
 

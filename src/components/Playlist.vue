@@ -4,14 +4,14 @@
             <h2 id="now-playing">{{current.name === undefined ? 'Select a song to start playing!' : current.name}}</h2>
             <div id="controls">
                 <button id="prev">Prev</button>
-                <button id="play" v-if="!isPlaying" @click='playSong()'>Play</button>
-                <button id="pause" v-else @click='pause()'>Pause</button>
-                <button id="next">Next</button>
+                <button id="play" v-if="!isPlaying" @click='playSong()'>►</button>
+                <button id="pause" v-else @click='pause()'>❙ ❙</button>
+                <button id="next" @click='next()'>Next</button>
             </div>
         </div>
         <div id="playlist">
             <h2>Playlist</h2>
-            <h3 v-if="$store.getters.playlist.length === 0">The playlist is empty. Start adding songs!</h3>
+            <h3 v-if="playlist.length === 0">The playlist is empty. Start adding songs!</h3>
             <button class="song" @click="playSong(song)" v-else v-for="song in playlist" :key="song.name">{{song.artist}} - {{song.name}}</button>
         </div>
     </div>
@@ -24,43 +24,64 @@ export default {
         return {
             current: {},
             player: new Audio(),
-            isPlaying: false
-
+            isPlaying: false,
+            index: 0
         }
     },
     methods: {
         playSong(song = {}){
-            //scenario 1: no current song  or song name in playlist
+            //scenario 1: no current song or clicking song name in playlist
             if(this.current.name === undefined){
                 if(song.src !== undefined){
                     //user clicks song name in playlist
                     this.current = song;
+                    //TO DO - update index here
+                    console.log(this.$store.state.playlist.findIndex({}));
                 }
                 else{
-                    //user clicks play button
-                    this.current = this.$store.state.playlist[0];
+                    //user clicks play button, play 1st song in playlist
+                    this.current = this.playlist[0];
                 }
-                this.player.src = this.current.src;
-                this.player.play();
-                this.isPlaying = true;
+                this.startPlayer();
             }
             else{
-                //scenario 2: current song is set
+                //scenario 2: current song is set, unpause or select new song
                 if(song.name !== undefined){
+                    //TODO - update index here
                     //clicking new song
                     this.current = song;
-                    this.player.src = this.current.src;
+                    this.startPlayer()
                 }
+                else{
+                    //unpause
                     this.player.play();
                     this.isPlaying = true;
+                }
             }
         },
         pause(){
             this.player.pause();
             this.isPlaying = false;
-        }
+        },
+        next(){
+            if(this.playlist.length === 0 || this.index + 1 >= this.playlist.length ){
+                return;
+            }
+            else{
+                this.index += 1;
+            }
+            this.current = this.playlist[this.index];
+            this.startPlayer();
+        },
+        startPlayer(){
+            this.player.src = this.current.src;
+            this.player.play();
+            this.isPlaying = true;
+        },
+
     },
     computed: {
+        //add our playlist getter as this.playlist
         ...mapGetters(['playlist'])
     }
 }
@@ -103,16 +124,20 @@ export default {
     #playlist {
         padding: 0px 25px;
         text-align: center;
+        display: flex;
+        flex-direction: column;
+    }
+
+    #playlist > * {
+        padding: 10px 0;
     }
 
     #playlist h2 {
         color: #212121;
         font-size: 1.2em;
-        padding: 15px 0;
     }
 
     #playlist .song {
-        display: block;
-        width: 100%;
+        margin: 0 auto;
     }
 </style>
