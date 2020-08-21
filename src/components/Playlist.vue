@@ -24,8 +24,7 @@ export default {
         return {
             current: {},
             player: new Audio(),
-            isPlaying: false,
-            index: 0
+            isPlaying: false
         }
     },
     methods: {
@@ -35,8 +34,7 @@ export default {
                 if(song.src !== undefined){
                     //user clicks song name in playlist
                     this.current = song;
-                    //TO DO - update index here
-                    console.log(this.$store.state.playlist.findIndex({}));
+                    this.$store.commit('updateIndexWithSong', song.name);
                 }
                 else{
                     //user clicks play button, play 1st song in playlist
@@ -47,9 +45,9 @@ export default {
             else{
                 //scenario 2: current song is set, unpause or select new song
                 if(song.name !== undefined){
-                    //TODO - update index here
                     //clicking new song
                     this.current = song;
+                    this.$store.commit('updateIndexWithSong', song.name);
                     this.startPlayer()
                 }
                 else{
@@ -64,13 +62,14 @@ export default {
             this.isPlaying = false;
         },
         next(){
-            if(this.playlist.length === 0 || this.index + 1 >= this.playlist.length ){
+            //do nothing if no song in playlist or at last song in playlist
+            if(this.playlistIndex + 1 >= this.playlist.length || this.current.name === undefined){
                 return;
             }
             else{
-                this.index += 1;
+                this.$store.commit('updatePlaylistIndex', this.playlistIndex + 1);
             }
-            this.current = this.playlist[this.index];
+            this.current = this.playlist[this.playlistIndex];
             this.startPlayer();
         },
         startPlayer(){
@@ -82,7 +81,7 @@ export default {
     },
     computed: {
         //add our playlist getter as this.playlist
-        ...mapGetters(['playlist'])
+        ...mapGetters(['playlist', 'playlistIndex'])
     }
 }
 </script>

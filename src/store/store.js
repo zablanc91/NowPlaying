@@ -26,6 +26,18 @@ const store = new Vuex.Store({
         },
         clearPlaylist(state){
             state.playlist = [];
+        },
+        updateIndexWithSong(state, songName){
+            //if the user clicks the name of the song on a playlist, update the current index
+            state.playlist.forEach((playlistSong, index) => {
+                if(playlistSong.name === songName){
+                    state.playlistIndex = index;
+                    return;
+                }
+            })
+        },
+        updatePlaylistIndex(state, newIndex){
+            state.playlistIndex = newIndex;
         }
     },
     getters: {
