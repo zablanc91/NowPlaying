@@ -34,7 +34,7 @@ const store = new Vuex.Store({
                     state.playlistIndex = index;
                     return;
                 }
-            })
+            });
         },
         updatePlaylistIndex(state, newIndex){
             state.playlistIndex = newIndex;

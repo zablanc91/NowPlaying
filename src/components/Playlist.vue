@@ -3,7 +3,7 @@
         <div>
             <h2 id="now-playing">{{current.name === undefined ? 'Select a song to start playing!' : current.name}}</h2>
             <div id="controls">
-                <button id="prev">Prev</button>
+                <button id="prev" @click="prev()">Prev</button>
                 <button id="play" v-if="!isPlaying" @click='playSong()'>►</button>
                 <button id="pause" v-else @click='pause()'>❙ ❙</button>
                 <button id="next" @click='next()'>Next</button>
@@ -72,10 +72,28 @@ export default {
             this.current = this.playlist[this.playlistIndex];
             this.startPlayer();
         },
+        prev(){
+            //do nothing if no song in playlist or at first song
+            if(this.playlistIndex - 1 < 0 || this.current.name === undefined){
+                return;
+            }
+            else{
+                this.$store.commit('updatePlaylistIndex', this.playlistIndex - 1);
+            }
+            this.current = this.playlist[this.playlistIndex];
+            this.startPlayer();
+        },
         startPlayer(){
             this.player.src = this.current.src;
             this.player.play();
             this.isPlaying = true;
+
+            //play the next song on playlist unless it's the last
+            this.player.addEventListener('ended', function(){
+                if(this.playlistIndex != this.playlist.length - 1){
+                    this.playSong(this.playlist[this.playlistIndex + 1]);
+                }
+            }.bind(this));
         },
 
     },
