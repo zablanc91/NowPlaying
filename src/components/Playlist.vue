@@ -48,7 +48,7 @@ export default {
                     //clicking new song
                     this.current = song;
                     this.$store.commit('updateIndexWithSong', song.name);
-                    this.startPlayer()
+                    this.startPlayer();
                 }
                 else{
                     //unpause
@@ -91,7 +91,12 @@ export default {
             //play the next song on playlist unless it's the last
             this.player.addEventListener('ended', function(){
                 if(this.playlistIndex != this.playlist.length - 1){
-                    this.playSong(this.playlist[this.playlistIndex + 1]);
+                    this.current = this.playlist[this.playlistIndex + 1];
+                    this.playSong(this.current);
+                }
+                else{
+                    this.current = {};
+                    this.isPlaying = false;
                 }
             }.bind(this));
         },
