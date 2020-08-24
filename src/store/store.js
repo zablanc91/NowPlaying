@@ -6,7 +6,8 @@ Vue.use(Vuex);
 //create test playlist for now
 const store = new Vuex.Store({
     state: {
-        playlist: [
+        playlist: [],
+        songs: [
             {
                 artist: 'rhythmrobot vs Owen Ni',
                 name: 'Planet Uno',
@@ -21,8 +22,13 @@ const store = new Vuex.Store({
         playlistIndex : 0
     },
     mutations: {
-        addSong(state, song){
+        addSongToPlaylist(state, song){
             state.playlist.push(song);
+        },
+        removeSongFromPlaylist(state, song){
+            state.playlist = state.playlist.filter(playListSong => {
+                return (playListSong.name != song.name);
+            })
         },
         clearPlaylist(state){
             state.playlist = [];
@@ -42,7 +48,8 @@ const store = new Vuex.Store({
     },
     getters: {
         playlist: state => state.playlist,
-        playlistIndex: state => state.playlistIndex   
+        playlistIndex: state => state.playlistIndex,
+        songs: state => state.songs   
     }
 });
 

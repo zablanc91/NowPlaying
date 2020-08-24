@@ -37,6 +37,9 @@ export default {
                     this.$store.commit('updateIndexWithSong', song.name);
                 }
                 else{
+                    if(this.playlist.length === 0){
+                        return;
+                    }
                     //user clicks play button, play 1st song in playlist
                     this.current = this.playlist[0];
                 }
