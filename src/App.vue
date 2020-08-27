@@ -31,8 +31,9 @@ export default {
 
 main {
   width: 100%;
-  max-width: 768px;
   margin: 0 auto;
   padding: 25px;
+  background-color: #2b2d2f;
+  color: white;
 }
 </style>

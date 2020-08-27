@@ -43,5 +43,16 @@ export default {
 </script>
 
 <style>
+    #songs{
+        text-align: center;
+        color: white;
+    }
 
+    #songs > * {
+        margin: 20px 0;
+    }
+
+    button {
+        color: white;
+    }
 </style>

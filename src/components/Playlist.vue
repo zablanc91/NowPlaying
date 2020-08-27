@@ -108,6 +108,9 @@ export default {
     computed: {
         //add our playlist getter as this.playlist
         ...mapGetters(['playlist', 'playlistIndex'])
+    },
+    destroyed: function(){
+        this.player.pause();
     }
 }
 </script>
@@ -158,7 +161,7 @@ export default {
     }
 
     #playlist h2 {
-        color: #212121;
+        color: #ffffff;
         font-size: 1.2em;
     }
 
